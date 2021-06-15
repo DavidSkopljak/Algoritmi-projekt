@@ -4,7 +4,20 @@
 
 using namespace std;
 
-void odgovor(int Lineno)
+void odabirKategorije(int kategorijaOdabir)
+{
+	cout << "Odaberite kategoriju." << endl;
+	cin >> kategorijaOdabir;
+
+	while (kategorijaOdabir < 1 || kategorijaOdabir > 6)
+	{
+		cout << "Unesite valjani odabir!" << endl;
+		cin >> kategorijaOdabir;
+	}
+
+}
+
+void odgovorOpcenito(int Lineno)
 {
 	switch (Lineno)
 	{
@@ -45,8 +58,10 @@ void odgovor(int Lineno)
 
 int main()
 {
-	string korisnikIme, korisnikOdgovor;
-	int korisnikBodovi = 0, korisnikBodoviPrethodni=3;
+	string korisnikIme;
+	int kategorijaOdabir = 0;
+	char korisnikOdgovor;
+	int korisnikBodovi = 0, korisnikBodoviPrethodni = 3;
 	int brojPitanja = 1;
 	string linePitanje;
 	char lineOdgovor[1];
@@ -76,33 +91,20 @@ int main()
 
 
 
-
-
-
-
-
-
-
-	string odgovori[15] = { "A","A","B","C","D","D","C","A","B","C","B","A","B","C","D" };
+	char odgovoriOpcenito[15] = { 'A','A','B','C','D','D','C','A','B','C','B','A','B','C','D' };
 
 
 
 	cout << "Unesite ime ispod 20 znakova." << endl;
 	getline(cin, korisnikIme);
+	system("cls");
 	while (korisnikIme.length() > 20)
 	{
 		cout << "Unesite ime ispod 20 znakova!" << endl;
-		getline(cin, korisnikIme);
+		system("cls");
 	}
-	///////////////////////////////////////////////////////////////////////////////////
 
-
-
-
-
-
-
-
+	odabirKategorije(kategorijaOdabir);
 
 
 
@@ -119,9 +121,25 @@ int main()
 			if (Lineno == brojPitanja)
 			{
 				cout << linePitanje << endl;
-				odgovor(Lineno);
+				switch (kategorijaOdabir)
+				{
+				case 1:break;
+
+				case 2:break;
+
+				case 3:break;
+
+				case 4:break;
+
+				case 5:break;
+
+				case 6:break;
+				}
+				odgovorOpcenito(Lineno);
 				cin >> korisnikOdgovor;
-				if (korisnikOdgovor == odgovori[brojPitanja - 1])
+				system("cls");
+				korisnikOdgovor = toupper(korisnikOdgovor);
+				if (korisnikOdgovor == odgovoriOpcenito[brojPitanja - 1])
 					korisnikBodovi++;
 
 			}
@@ -131,47 +149,20 @@ int main()
 	}
 
 
-	
-	
+	ifstream rezultatOutput;
+	rezultatOutput.open("prethodni rezulat.bin", ios::in | ios::binary);
+	rezultatOutput.read((char*)&korisnikBodoviPrethodni, sizeof(korisnikBodovi));
+	cout << endl << endl << "Prethodni rezultat: " << korisnikBodoviPrethodni << "/15 bodova." << endl;
+	rezultatOutput.close();
+
 	ofstream rezultatInput;
-	rezultatInput.open("prethodni rezulat.txt", ios::out | ios::binary);
+	rezultatInput.open("prethodni rezulat.bin", ios::trunc | ios::out | ios::binary);
 	rezultatInput.write((char*)&korisnikBodovi, sizeof(korisnikBodovi));
 	rezultatInput.close();
-
-	ifstream rezultatOutput;
-	rezultatOutput.open("prethodni rezulat.txt", ios::trunc | ios::in | ios::binary);
-	while (!rezultatOutput.eof()) 
-	{
-		
-		rezultatOutput.read((char*)&korisnikBodoviPrethodni, sizeof(korisnikBodovi));
-		cout << endl << endl << korisnikBodoviPrethodni << endl;
-	}rezultatOutput.close();
-	
-
-
-
-
-	
-
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
 
 	cout << "Rezultat: " << korisnikBodovi << "/15 bodova!" << endl << "Ime korisnika: " << korisnikIme << endl;
 	return 0;
-}
+}}
